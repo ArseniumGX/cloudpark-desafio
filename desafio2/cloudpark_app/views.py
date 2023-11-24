@@ -94,6 +94,28 @@ class PlanAPIView(APIView):
          return Response(serializer.data)
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ContractAPIView(APIView):
+   # TODO Remover método apos testes
+   def get(self, request):
+      contract = Contract.objects.all()
+      serializer = ContractSerializer(contract, many=True)
+      return Response(serializer.data)
+   
+   def post(self, request):
+      serializer = ContractSerializer(data=request.data)
+      if serializer.is_valid():
+         serializer.save()
+         return Response(serializer.data, status=status.HTTP_201_CREATED)
+      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+   
+   def put(self, request):
+      contract = get_object_or_404(Contract, description=request.data.get('description'))
+      serializer = ContractSerializer(contract, data=request.data)
+      if serializer.is_valid():
+         serializer.save()
+         return Response(serializer.data)
+      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class CustomerPlanAPIView(APIView):
    def get(self, request, pk=None):
       serializer = None
@@ -115,58 +137,6 @@ class CustomerPlanAPIView(APIView):
    def put(self, request, pk):
       customer_plan = get_object_or_404(CustomerPlan, pk=pk)
       serializer = CustomerPlanSerializer(customer_plan, data=request.data)
-      if serializer.is_valid():
-         serializer.save()
-         return Response(serializer.data)
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class ContractAPIView(APIView):
-   def get(self, request, pk=None):
-      serializer = None
-      if pk is not None:
-         contract = get_object_or_404(Contract, pk=pk)
-         serializer = ContractSerializer(contract)
-      else:
-         contract = Contract.objects.all()
-         serializer = ContractSerializer(contract, many=True)
-      return Response(serializer.data)
-   
-   def post(self, request):
-      serializer = ContractSerializer(data=request.data)
-      if serializer.is_valid():
-         serializer.save()
-         return Response(serializer.data, status=status.HTTP_201_CREATED)
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-   
-   def put(self, request, pk):
-      contract = get_object_or_404(Contract, pk=pk)
-      serializer = ContractSerializer(contract, data=request.data)
-      if serializer.is_valid():
-         serializer.save()
-         return Response(serializer.data)
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class ContractRuleAPIView(APIView):
-   def get(self, request, pk=None):
-      serializer = None
-      if pk is not None:
-         contract_rule = get_object_or_404(ContractRule, pk=pk)
-         serializer = ContractRuleSerializer(contract_rule)
-      else:
-         contract_rule = ContractRule.objects.all()
-         serializer = ContractRuleSerializer(contract_rule, many=True)
-      return Response(serializer.data)
-   
-   def post(self, request):
-      serializer = ContractRuleSerializer(data=request.data)
-      if serializer.is_valid():
-         serializer.save()
-         return Response(serializer.data, status=status.HTTP_201_CREATED)
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-   
-   def put(self, request, pk):
-      contract_rule = get_object_or_404(ContractRule, pk=pk)
-      serializer = ContractRuleSerializer(contract_rule, data=request.data)
       if serializer.is_valid():
          serializer.save()
          return Response(serializer.data)

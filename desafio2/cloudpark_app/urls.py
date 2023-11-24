@@ -1,19 +1,19 @@
 from django.urls import path
-from .views import (CustomerAPIView, VehicleAPIView, PlanAPIView, CustomerPlanAPIView, ContractAPIView, ContractRuleAPIView, ParkMovementAPIView)
+from .views import (ContractAPIView)
 
 urlpatterns = [
-   path('customer', CustomerAPIView.as_view()),
-   path('customer/<int:pk>', CustomerAPIView.as_view()),
-   path('vehicle', VehicleAPIView.as_view()),
-   path('vehicle/<int:pk>', VehicleAPIView.as_view()),
-   path('plan', PlanAPIView.as_view()),
-   path('plan/<int:pk>', PlanAPIView.as_view()),
-   path('customerplan', CustomerPlanAPIView.as_view()),
-   path('customerplan/<int:pk>', CustomerPlanAPIView.as_view()),
+   # Para cadastro e edição de clientes
+   # path('/customer'),
+   # Para cadastro e edição de planos
+   # path('/plan'),
+   # Para cadastro e edição de veículos
+   # path('/vehicle'),
+   # Para cadastro e edição de contratos
    path('contract', ContractAPIView.as_view()),
-   path('contract/<int:pk>', ContractAPIView.as_view()),
-   path('contractrule', ContractRuleAPIView.as_view()),
-   path('contractrule/<int:pk>', ContractRuleAPIView.as_view()),
-   path('parkmoviment', ParkMovementAPIView.as_view()),
-   path('parkmoviment/<int:pk>', ParkMovementAPIView.as_view()),
+   # Para cadastro de veículos (vincular vehicle/custumer)
+   # path('/customervehicle'),
+   # Para efetuar o vínculo do plano com o cliente
+   # path('/customerplan'), 
+   # Para dar entrada/saída em movimentos do pátio
+   # path('parkmoviment')
 ]

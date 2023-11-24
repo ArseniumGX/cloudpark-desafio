@@ -5,18 +5,18 @@ from django.db import models
 class Customer(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    card_id = models.CharField(max_length=10, null=True)
+    card_id = models.CharField(max_length=10, unique=True)
 
 class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
-    plate = models.CharField(max_length=10)
+    plate = models.CharField(max_length=10, unique=True)
     model = models.CharField(max_length=30, null=True)
     description = models.CharField(max_length=50, null=True)
     customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
 
 class Plan(models.Model):
     id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=50)
+    description = models.CharField(max_length=50, unique=True)
     value = models.FloatField()
 
 class CustomerPlan(models.Model):
@@ -27,12 +27,12 @@ class CustomerPlan(models.Model):
 
 class Contract(models.Model):
     id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=50)
+    description = models.CharField(max_length=50, unique=True)
     max_value = models.FloatField(null=True)
 
 class ContractRule(models.Model):
     id = models.AutoField(primary_key=True)
-    contract_id = models.ForeignKey(Contract, on_delete=models.CASCADE)
+    contract_id = models.ForeignKey(Contract, on_delete=models.CASCADE, )
     until = models.IntegerField()
     value = models.FloatField()
 
@@ -42,11 +42,3 @@ class ParkMovement(models.Model):
     exit_date = models.DateTimeField(null=True)
     vehicle_id = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     value = models.FloatField(null=True)
-
-Customer._meta.app_label = 'cloudpark_app'
-Vehicle._meta.app_label = 'cloudpark_app'
-Plan._meta.app_label = 'cloudpark_app'
-CustomerPlan._meta.app_label = 'cloudpark_app'
-Contract._meta.app_label = 'cloudpark_app'
-ContractRule._meta.app_label = 'cloudpark_app'
-ParkMovement._meta.app_label = 'cloudpark_app'

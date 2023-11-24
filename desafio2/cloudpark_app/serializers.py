@@ -20,16 +20,35 @@ class CustomerPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerPlan
         fields = '__all__'
-
-class ContractSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Contract
-        fields = '__all__'
-
 class ContractRuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContractRule
-        fields = '__all__'
+        fields = ['until', 'value']
+
+class ContractSerializer(serializers.ModelSerializer):
+    rules = ContractRuleSerializer(many=True, required=False)
+    class Meta:
+        model = Contract
+        fields = ['id', 'description', 'max_value', 'rules']
+
+    def create(self, validated_data):
+        print(validated_data)
+        rules = validated_data.pop('rules', [])
+        contract = Contract.objects.create(**validated_data)
+        print(rules)
+        print(contract)
+        for rule in rules:
+            ContractRule.objects.create(contract=contract, **rule)
+        return contract
+    
+    def update(self, instance, validated_data):
+        rules_data = validated_data.pop('rules', [])
+        instance = super().update(instance, validated_data)
+        instance.rules.all().delete()
+        for rule_data in rules_data:
+            ContractRule.objects.create(contract=instance, **rule_data)
+        return instance
+
 
 class ParkMovementSerializer(serializers.ModelSerializer):
     class Meta:
