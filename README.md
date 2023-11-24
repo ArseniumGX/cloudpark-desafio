@@ -1,4 +1,4 @@
 # cloudpark-desafio
 
 ## Status
- - Incompleto
+ - Incompleto (Problemas no exercicio 2, não está funcionando)
